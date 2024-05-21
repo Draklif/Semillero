@@ -1,0 +1,19 @@
+{
+    "projects" : [
+        {
+            "id" : 1,
+            "name" : "Modelo Universidad de Boyaca",
+            "desc_short" : "Desc",
+            "date" : "01-02-2024",
+            "authors" : [
+                { "name": "Jose" },
+                { "name": "Julian" }
+            ],
+            "tags" : ["vr", "xd"],
+            "format" : [""],
+            "images" : ["vite.svg", "vite.svg", "vite.svg"],
+            "links" : ["https://www.instagram.com/joseman_renteria", "https://github.com/Draklif"],
+            "desc_long" : "Desc long"
+        }
+    ]
+}
