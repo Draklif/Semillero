@@ -17,6 +17,7 @@
     "@types/three": "^0.164.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "dompurify": "^3.1.5",
     "lucide-react": "^0.376.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -27,6 +28,7 @@
   "devDependencies": {
     "@tanstack/router-devtools": "^1.31.1",
     "@tanstack/router-vite-plugin": "^1.30.0",
+    "@types/dompurify": "^3.0.5",
     "@types/react": "^18.2.66",
     "@types/react-dom": "^18.2.22",
     "@typescript-eslint/eslint-plugin": "^7.2.0",
