@@ -7,6 +7,8 @@ export const Route = createFileRoute("/")({
 
 function Landing() {
   return (
-    <MainModel/>
+    <div className="h-100">
+      <MainModel/>
+    </div>
   )
 }
