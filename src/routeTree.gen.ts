@@ -12,6 +12,7 @@
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as RepositorioImport } from './routes/repositorio'
+import { Route as IndexImport } from './routes/index'
 import { Route as ProyectosIndexImport } from './routes/proyectos/index'
 import { Route as ProyectosProyectoIdImport } from './routes/proyectos/$proyectoId'
 
@@ -19,6 +20,11 @@ import { Route as ProyectosProyectoIdImport } from './routes/proyectos/$proyecto
 
 const RepositorioRoute = RepositorioImport.update({
   path: '/repositorio',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const IndexRoute = IndexImport.update({
+  path: '/',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -36,6 +42,10 @@ const ProyectosProyectoIdRoute = ProyectosProyectoIdImport.update({
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/': {
+      preLoaderRoute: typeof IndexImport
+      parentRoute: typeof rootRoute
+    }
     '/repositorio': {
       preLoaderRoute: typeof RepositorioImport
       parentRoute: typeof rootRoute
@@ -54,6 +64,7 @@ declare module '@tanstack/react-router' {
 // Create and export the route tree
 
 export const routeTree = rootRoute.addChildren([
+  IndexRoute,
   RepositorioRoute,
   ProyectosProyectoIdRoute,
   ProyectosIndexRoute,

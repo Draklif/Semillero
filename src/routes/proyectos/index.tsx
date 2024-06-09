@@ -3,6 +3,13 @@ import { createFileRoute } from "@tanstack/react-router";
 import data from "@/data/data.json";
 import ProjectCard from "@/components/reusables/projectCard";
 import { Project } from "@/types";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel"
 
 export const Route = createFileRoute("/proyectos/")({
   component: ProjectList,
@@ -79,11 +86,21 @@ function ProjectList() {
 
   return (
     <div className="bg-gray-900 min-h-screen text-white p-6">
-      <div className="w-full md:w-4/5 lg:w-3/4 xl:w-2/3 2xl:w-1/2 mx-auto">
+      <div className="w-full md:w-4/5 mx-auto">
         <h1 className="text-2xl font-bold mb-2 text-left">Proyectos</h1>
         <h2 className="text-xl font-semibold mb-4 text-left">Explorar Categorías</h2>
         <div className="h-40 bg-gray-800 rounded-lg mb-8 flex items-center justify-center">
-          <p className="text-white text-center">Carrusel de categorías (En construcción)</p>
+        <Carousel>
+          <CarouselContent>
+            <CarouselItem className="basis-1/3">1</CarouselItem>
+            <CarouselItem className="basis-1/3">2</CarouselItem>
+            <CarouselItem className="basis-1/3">3</CarouselItem>
+            <CarouselItem className="basis-1/3">4</CarouselItem>
+            <CarouselItem className="basis-1/3">5</CarouselItem>
+          </CarouselContent>
+          <CarouselPrevious className="text-black" />
+          <CarouselNext className="text-black" />
+        </Carousel>
         </div>
         <div className="flex flex-col items-center gap-4">
           {currentProjects.map((project, index) => (

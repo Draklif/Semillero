@@ -422,30 +422,30 @@
         },
         {
             "id" : 29,
-            "name" : "Otro proyecto",
+            "name" : "F",
             "desc_short" : "Desc",
             "date" : "07-04-2024",
             "authors" : [
                 { "name": "Jessica" },
                 { "name": "Daniel" }
             ],
-            "tags" : ["Videojuego", "Simulación", "Other"],
-            "format" : [""],
+            "tags" : ["Videojuego", "Simulación", "Other", "Thing"],
+            "format" : [".obj"],
             "images" : ["Image.png", "vite.svg", "vite.svg"],
             "links" : ["https://www.instagram.com/joseman_renteria", "https://github.com/Draklif"],
             "desc_long" : "Desc long"
         },
         {
             "id" : 30,
-            "name" : "Otro proyecto",
+            "name" : "G",
             "desc_short" : "Desc",
             "date" : "07-04-2024",
             "authors" : [
                 { "name": "Jessica" },
                 { "name": "Daniel" }
             ],
-            "tags" : ["Videojuego", "Simulación", "Other"],
-            "format" : [""],
+            "tags" : ["Videojuego", "Simulación", "Filtro", "Thing"],
+            "format" : [".blend"],
             "images" : ["Image.png", "vite.svg", "vite.svg"],
             "links" : ["https://www.instagram.com/joseman_renteria", "https://github.com/Draklif"],
             "desc_long" : "Desc long"
@@ -460,7 +460,7 @@
                 { "name": "Daniel" }
             ],
             "tags" : ["Videojuego", "Simulación", "Other"],
-            "format" : [""],
+            "format" : [".fbx"],
             "images" : ["Image.png", "vite.svg", "vite.svg"],
             "links" : ["https://www.instagram.com/joseman_renteria", "https://github.com/Draklif"],
             "desc_long" : "Desc long"
@@ -475,7 +475,7 @@
                 { "name": "Daniel" }
             ],
             "tags" : ["Videojuego", "Simulación", "Other"],
-            "format" : [""],
+            "format" : [".obj"],
             "images" : ["Image.png", "vite.svg", "vite.svg"],
             "links" : ["https://www.instagram.com/joseman_renteria", "https://github.com/Draklif"],
             "desc_long" : "Desc long"
@@ -490,7 +490,7 @@
                 { "name": "Daniel" }
             ],
             "tags" : ["Videojuego", "Simulación", "Other"],
-            "format" : [""],
+            "format" : [".blend"],
             "images" : ["Image.png", "vite.svg", "vite.svg"],
             "links" : ["https://www.instagram.com/joseman_renteria", "https://github.com/Draklif"],
             "desc_long" : "Desc long"
@@ -505,7 +505,7 @@
                 { "name": "Daniel" }
             ],
             "tags" : ["Videojuego", "Simulación", "Other"],
-            "format" : [""],
+            "format" : [".obhj"],
             "images" : ["Image.png", "vite.svg", "vite.svg"],
             "links" : ["https://www.instagram.com/joseman_renteria", "https://github.com/Draklif"],
             "desc_long" : "Desc long"
@@ -520,7 +520,7 @@
                 { "name": "Daniel" }
             ],
             "tags" : ["Videojuego", "Simulación", "Other"],
-            "format" : [""],
+            "format" : [".obx"],
             "images" : ["Image.png", "vite.svg", "vite.svg"],
             "links" : ["https://www.instagram.com/joseman_renteria", "https://github.com/Draklif"],
             "desc_long" : "Desc long"
