@@ -3,6 +3,13 @@ import { createFileRoute } from "@tanstack/react-router";
 import data from "../../data/data.json";
 import { useState } from "react";
 import { Project } from "@/types";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 
 export const Route = createFileRoute("/proyectos/$proyectoId")({
   component: ProyectoComponent,
@@ -14,6 +21,7 @@ function ProyectoComponent() {
   const [project] = useState(
     projects.find((item) => Number(proyectoId) === item.id)
   );
+  const [selectedImage, setSelectedImage] = useState(project ? project.images[0] : "");
 
   if (!project) {
     return <div>Proyecto no encontrado</div>;
@@ -21,25 +29,40 @@ function ProyectoComponent() {
 
   const cleanHTML = DOMPurify.sanitize(project.desc_long);
 
+  const handleImageSelect = (image) => {
+    setSelectedImage(image);
+  };
+
   return (
     <div className="bg-gray-900 text-white p-6">
       <h1 className="text-3xl font-bold mb-4">{project.name}</h1>
       <div className="flex gap-10">
         <div className="flex-1">
-          <img
-            src={project.images[1]}
-            alt="Imagen principal"
-            className="w-full"
-          />
-          <div className="mt-4 grid grid-cols-3 gap-2">
-            {project.images.slice(1).map((img, index) => (
-              <img
-                key={index}
-                src={img}
-                alt={`Imagen ${index + 2}`}
-                className="w-full h-32 object-cover"
-              />
-            ))}
+          <div className="relative pt-[56.25%] w-full overflow-hidden">
+            <img
+              src={`/${selectedImage}`}
+              alt="Imagen principal"
+              className="absolute top-0 left-0 w-full h-full object-cover"
+            />
+          </div>
+          <div className="mt-4 flex items-center justify-center">
+            <Carousel opts={{ align: "start", loop: true }} className="w-4/5">
+              <CarouselContent className="-ml-1">
+                {project.images.map((img, index) => (
+                  <CarouselItem key={index} className="basis-1/3">
+                    <img
+                      key={index}
+                      src={`/${img}`}
+                      alt={`Imagen ${index + 1}`}
+                      className={`w-full h-32 object-cover ${img === selectedImage ? 'ring-2 ring-blue-500' : ''}`}
+                      onClick={() => handleImageSelect(img)}
+                    />
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious className="text-black" />
+              <CarouselNext className="text-black" />
+            </Carousel>
           </div>
         </div>
         <div className="w-1/3 bg-gray-800 p-4 rounded-lg">
