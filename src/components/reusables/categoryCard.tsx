@@ -1,4 +1,11 @@
-function CategoryCard({ category, backgroundImage, onClick, isActive }) {
+interface CategoryCardProps {
+  category: string;
+  backgroundImage: string;
+  onClick: () => void;
+  isActive: boolean;
+}
+
+function CategoryCard({ category, backgroundImage, onClick, isActive }: CategoryCardProps) {
   return (
     <div
       className={`relative w-48 h-48 rounded-lg overflow-hidden shadow-lg cursor-pointer ${isActive ? 'ring-2 ring-blue-500' : ''}`}

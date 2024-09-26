@@ -1,6 +1,13 @@
 import React, { useState } from "react";
 
-function FilterSidebar({ filtrosActivos, categoryCounts, onAddFilter, onRemoveFilter, }) {
+interface FilterSidebarProps {
+  filtrosActivos: string[];
+  categoryCounts: Record<string, number>;
+  onAddFilter: (filtro: string) => void;
+  onRemoveFilter: (filtro: string) => void;
+}
+
+function FilterSidebar({ filtrosActivos, categoryCounts, onAddFilter, onRemoveFilter }: FilterSidebarProps) {
   const [filtroInput, setFiltroInput] = useState("");
   const [isCategoriesOpen, setIsCategoriesOpen] = useState(false);
 

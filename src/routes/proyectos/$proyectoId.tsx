@@ -29,7 +29,7 @@ function ProyectoComponent() {
 
   const cleanHTML = DOMPurify.sanitize(project.desc_long);
 
-  const handleImageSelect = (image) => {
+  const handleImageSelect = (image : string) => {
     setSelectedImage(image);
   };
 

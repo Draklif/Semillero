@@ -1,6 +1,14 @@
 import ProjectCard from "@/components/reusables/projectCard";
+import { Project } from "@/types/index";
 
-function ProjectList({ projects, numPages, currentPage, setCurrentPage }) {
+interface ProjectListProps {
+  projects: Project[];
+  numPages: number;
+  currentPage: number;
+  setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
+}
+
+function ProjectList({ projects, numPages, currentPage, setCurrentPage }: ProjectListProps) {
   const getPageButtons = () => {
     const pageButtons = [];
     const visiblePages: number[] = [];

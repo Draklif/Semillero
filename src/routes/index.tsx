@@ -19,9 +19,14 @@ export const Route = createFileRoute("/")({
 
 const projects: Project[] = data.projects;
 
+interface Category {
+  tag: string;
+  image: string;
+}
+
 function Landing() {
   const router = useNavigate();
-  const [categories, setCategories] = useState([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [proyectos, setProyectos] = useState<Project[]>([]);
 
   useEffect(() => {

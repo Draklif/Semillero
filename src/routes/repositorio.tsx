@@ -73,9 +73,7 @@ function RepositoryList() {
       <div className="w-full md:w-4/5 mx-auto">
         <h1 className="text-2xl font-bold mb-2 text-left">Repositorio</h1>
         <div className="flex">
-          <FilterSidebar filtrosActivos={filtrosActivos} setFiltrosActivos={setFiltrosActivos}
-                         categoryCounts={categoryCounts} onAddFilter={agregarFiltroClick}
-                         onRemoveFilter={eliminarFiltro} />
+          <FilterSidebar filtrosActivos={filtrosActivos} categoryCounts={categoryCounts} onAddFilter={agregarFiltroClick} onRemoveFilter={eliminarFiltro} />
           <ProjectList projects={currentProjects} numPages={numPages} currentPage={currentPage} setCurrentPage={setCurrentPage} />
         </div>
       </div>
