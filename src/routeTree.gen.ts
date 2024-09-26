@@ -42,19 +42,19 @@ const ProyectosProyectoIdRoute = ProyectosProyectoIdImport.update({
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
+    'semillero/': {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
-    '/repositorio': {
+    'semillero/repositorio': {
       preLoaderRoute: typeof RepositorioImport
       parentRoute: typeof rootRoute
     }
-    '/proyectos/$proyectoId': {
+    'semillero/proyectos/$proyectoId': {
       preLoaderRoute: typeof ProyectosProyectoIdImport
       parentRoute: typeof rootRoute
     }
-    '/proyectos/': {
+    'semillero/proyectos/': {
       preLoaderRoute: typeof ProyectosIndexImport
       parentRoute: typeof rootRoute
     }
