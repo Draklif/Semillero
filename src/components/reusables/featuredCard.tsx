@@ -12,7 +12,7 @@ function FeaturedCard({ project }: FeaturedCardProps) {
     <div className="bg-gray-900 rounded-lg p-4 flex gap-4">
       <div className="flex-none w-2/3 relative" style={{ paddingTop: "37.5%" }}>
         <img
-          src={`/${project.images[0]}`}
+          src={`${project.images[0]}`}
           alt="Imagen principal"
           className="absolute top-0 left-0 w-full h-full object-cover rounded-lg"
         />
@@ -28,7 +28,7 @@ function FeaturedCard({ project }: FeaturedCardProps) {
               style={{ paddingTop: "56.25%" }}
             >
               <img
-                src={`/${img}`}
+                src={`${img}`}
                 alt={`Imagen ${index + 1}`}
                 className="absolute top-0 left-0 w-full h-full object-cover rounded-lg"
               />

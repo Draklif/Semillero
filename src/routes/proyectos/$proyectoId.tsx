@@ -40,7 +40,7 @@ function ProyectoComponent() {
         <div className="flex-1">
           <div className="relative pt-[56.25%] w-full overflow-hidden">
             <img
-              src={`/${selectedImage}`}
+              src={`${selectedImage}`}
               alt="Imagen principal"
               className="absolute top-0 left-0 w-full h-full object-cover"
             />
@@ -52,7 +52,7 @@ function ProyectoComponent() {
                   <CarouselItem key={index} className="basis-1/3">
                     <img
                       key={index}
-                      src={`/${img}`}
+                      src={`${img}`}
                       alt={`Imagen ${index + 1}`}
                       className={`w-full h-32 object-cover ${img === selectedImage ? 'ring-2 ring-blue-500' : ''}`}
                       onClick={() => handleImageSelect(img)}
