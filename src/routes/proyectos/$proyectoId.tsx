@@ -67,7 +67,7 @@ function ProyectoComponent() {
         </div>
         <div className="w-1/3 bg-gray-800 p-4 rounded-lg">
           <img
-            src={`/${project.images[0]}`}
+            src={`${project.images[0]}`}
             alt="Imagen principal"
             className="w-full h-48 object-cover"
           />
