@@ -47,13 +47,17 @@ function Landing() {
 
   return (
     <div className="bg-gray-900 min-h-screen text-white p-6">
-      <MainModel/>
+      <MainModel />
       <h2 className="text-2xl font-bold mt-8 mb-4">Últimos Proyectos</h2>
       <div className="rounded-lg bg-gray-800 mb-8 flex items-center justify-center p-4">
         <Carousel className="w-[1440px]">
           <CarouselContent>
-            <CarouselItem>{proyectos[0] &&<FeaturedCard project={proyectos[0]}/>}</CarouselItem>
-            <CarouselItem>{proyectos[1] &&<FeaturedCard project={proyectos[1]}/>}</CarouselItem>
+            <CarouselItem>
+              {proyectos[0] && <FeaturedCard project={proyectos[0]} />}
+            </CarouselItem>
+            <CarouselItem>
+              {proyectos[1] && <FeaturedCard project={proyectos[1]} />}
+            </CarouselItem>
           </CarouselContent>
           <CarouselPrevious className="text-black" />
           <CarouselNext className="text-black" />
@@ -61,7 +65,11 @@ function Landing() {
       </div>
       <h1 className="text-3xl font-bold mt-8">Más Información</h1>
       <p className="text-white mt-4 mb-8">
-        Este portal web está diseñado para todos aquellos interesados no solamente en crear y aportar al catálogo creciente de proyectos multimedia de la Universidad de Boyacá, sino también para quienes deseen ver y explorar los diferentes productos que en Ingeniería en Multimedia queremos ofrecer.
+        Este portal web está diseñado para todos aquellos interesados no
+        solamente en crear y aportar al catálogo creciente de proyectos
+        multimedia de la Universidad de Boyacá, sino también para quienes deseen
+        ver y explorar los diferentes productos que en Ingeniería en Multimedia
+        queremos ofrecer.
       </p>
       <p className="text-blue-400 italic">
         ¡Únete ahora a la carrera del futuro y sé parte de los mejores!
@@ -86,5 +94,5 @@ function Landing() {
         </Carousel>
       </div>
     </div>
-  )
+  );
 }

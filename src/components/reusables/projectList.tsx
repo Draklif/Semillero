@@ -3,37 +3,32 @@ import ProjectCard from "@/components/reusables/projectCard";
 function ProjectList({ projects, numPages, currentPage, setCurrentPage }) {
   const getPageButtons = () => {
     const pageButtons = [];
-    const visiblePages: number[] = []; // No add first page yet to manage ellipsis correctly
+    const visiblePages: number[] = [];
 
-    // Determine dynamic range around the current page
     let start = Math.max(2, currentPage - 1);
     let end = Math.min(numPages - 1, currentPage + 1);
 
     if (currentPage < 4) {
-      end = Math.min(5, numPages - 1); // Show first five pages dynamically
-      visiblePages.push(1); // Include the first page since we are in the initial pages
+      end = Math.min(5, numPages - 1);
+      visiblePages.push(1);
     }
     if (currentPage > numPages - 4) {
-      start = Math.max(numPages - 4, 2); // Show last five pages dynamically
+      start = Math.max(numPages - 4, 2);
     }
 
-    // Fill the range of visible pages, adjust start if needed
-    if (start > 2) visiblePages.push(1); // Always show the first page if start is away from first
+    if (start > 2) visiblePages.push(1);
     for (let i = start; i <= end; i++) {
       if (!visiblePages.includes(i)) {
         visiblePages.push(i);
       }
     }
     if (numPages > 1 && !visiblePages.includes(numPages)) {
-      visiblePages.push(numPages); // Always show the last page
+      visiblePages.push(numPages);
     }
 
-    // Generate buttons with possible ellipsis
     let previous = 0;
     for (let i = 0; i < visiblePages.length; i++) {
       if (visiblePages[i] !== previous + 1 && previous !== 0) {
-        // Add ellipsis only if there is a gap larger than 1 in the sequence
-        // and it's not right after the first button if first button is shown
         pageButtons.push(
           <span key={"ellipsis-" + i} className="px-3 py-1 text-white">
             ...

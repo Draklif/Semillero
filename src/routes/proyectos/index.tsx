@@ -27,7 +27,6 @@ function MainProjectList() {
   const [selectedCategory, setSelectedCategory] = useState("TODOS");
 
   useEffect(() => {
-    // Filtrar los proyectos que no tienen formatos definidos
     const initialProjects = projects.filter(
       (p) => p.format.length === 0 || p.format.every((fmt) => fmt === "")
     );
@@ -37,7 +36,6 @@ function MainProjectList() {
   }, []);
 
   useEffect(() => {
-    // Aplicar filtro de categoría si no es "TODOS"
     if (selectedCategory !== "TODOS") {
       const categoryFilteredProjects = proyectos.filter((p) =>
         p.tags.includes(selectedCategory)
