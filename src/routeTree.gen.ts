@@ -19,7 +19,7 @@ import { Route as ProyectosProyectoIdImport } from './routes/proyectos/$proyecto
 // Create/Update Routes
 
 const RepositorioRoute = RepositorioImport.update({
-  path: 'repositorio',
+  path: '/repositorio',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -29,12 +29,12 @@ const IndexRoute = IndexImport.update({
 } as any)
 
 const ProyectosIndexRoute = ProyectosIndexImport.update({
-  path: 'proyectos/',
+  path: '/proyectos/',
   getParentRoute: () => rootRoute,
 } as any)
 
 const ProyectosProyectoIdRoute = ProyectosProyectoIdImport.update({
-  path: 'proyectos/$proyectoId',
+  path: '/proyectos/$proyectoId',
   getParentRoute: () => rootRoute,
 } as any)
 

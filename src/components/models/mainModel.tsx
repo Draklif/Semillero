@@ -18,7 +18,7 @@ function MainModel() {
 
   const handleMouseUp = () => {
     if (!moving) {
-      router({ to: "/proyectos/$proyectoId", params: { proyectoId: "1" } });
+      router({ to: "/semillero/proyectos/$proyectoId", params: { proyectoId: "1" } });
     }
   };
 
