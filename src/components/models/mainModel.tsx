@@ -4,7 +4,7 @@ import { useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 
 function MainModel() {
-  const model = useFBX("/Universidad.fbx");
+  const model = useFBX("semillero/Universidad.fbx");
   const router = useNavigate();
   const [moving, setMoving] = useState(false);
 
