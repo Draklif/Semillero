@@ -19,22 +19,22 @@ import { Route as ProyectosProyectoIdImport } from './routes/proyectos/$proyecto
 // Create/Update Routes
 
 const RepositorioRoute = RepositorioImport.update({
-  path: '/repositorio',
+  path: 'semillero/repositorio',
   getParentRoute: () => rootRoute,
 } as any)
 
 const IndexRoute = IndexImport.update({
-  path: '/',
+  path: 'semillero/',
   getParentRoute: () => rootRoute,
 } as any)
 
 const ProyectosIndexRoute = ProyectosIndexImport.update({
-  path: '/proyectos/',
+  path: 'semillero/proyectos/',
   getParentRoute: () => rootRoute,
 } as any)
 
 const ProyectosProyectoIdRoute = ProyectosProyectoIdImport.update({
-  path: '/proyectos/$proyectoId',
+  path: 'semillero/proyectos/$proyectoId',
   getParentRoute: () => rootRoute,
 } as any)
 
