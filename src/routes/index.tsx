@@ -1,7 +1,6 @@
 import MainModel from "@/components/models/mainModel";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
-import data from "@/data/data.json";
 import CategoryCard from "@/components/reusables/categoryCard";
 import FeaturedCard from "@/components/reusables/featuredCard";
 import { Project } from "@/types";
@@ -12,12 +11,11 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import { getData } from "@/lib/api";
 
 export const Route = createFileRoute("/")({
   component: Landing,
 });
-
-const projects: Project[] = data.projects;
 
 interface Category {
   tag: string;
@@ -30,20 +28,25 @@ function Landing() {
   const [proyectos, setProyectos] = useState<Project[]>([]);
 
   useEffect(() => {
-    const initialProjects = projects.filter(
-      (p) => p.format.length === 0 || p.format.every((fmt) => fmt === "")
-    );
-    setProyectos(initialProjects);
-
-    const categoryMap = new Map();
-    proyectos.forEach((project) => {
-      project.tags.forEach((tag) => {
-        if (!categoryMap.has(tag)) {
-          categoryMap.set(tag, project.images[0]);
-        }
+    const fetchData = async () => {
+      const response = await getData()
+      const projects = response.projects
+      const initialProjects = projects.filter(
+        (p) => p.format.length === 0 || p.format.every((fmt) => fmt === "")
+      );
+      setProyectos(initialProjects);
+  
+      const categoryMap = new Map();
+      proyectos.forEach((project) => {
+        project.tags.forEach((tag) => {
+          if (!categoryMap.has(tag)) {
+            categoryMap.set(tag, project.images[0]);
+          }
+        });
       });
-    });
-    setCategories(Array.from(categoryMap, ([tag, image]) => ({ tag, image })));
+      setCategories(Array.from(categoryMap, ([tag, image]) => ({ tag, image })));
+    }
+    fetchData();
   });
 
   const handleCategorySelect = (category: string) => {
