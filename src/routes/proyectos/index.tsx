@@ -82,7 +82,7 @@ function MainProjectList() {
       });
     });
     return Array.from(categoryMap, ([tag, image]) => ({ tag, image }));
-  }, [filteredProjects]);
+  }, [proyectos, filteredProjects]);
 
   const startIndex = (currentPage - 1) * itemsPerPage;
   const currentProjects = filteredProjects.slice(startIndex, startIndex + itemsPerPage);

@@ -43,10 +43,10 @@ function CRUDProjectId() {
   }, [proyectoId]);
 
   // Función para manejar cambios en los campos
-  const handleInputChange = (field: string, value: any) => {
+  const handleInputChange = <K extends keyof Project>(field: K, value: Project[K]) => {
     if (project) {
       setProject((prevProject) => ({
-        ...prevProject,
+        ...prevProject as Project,
         [field]: value,
       }));
     }
@@ -100,12 +100,30 @@ function CRUDProjectId() {
   };
 
   // Función para eliminar un elemento de una lista
-  const handleRemoveItem = (field: string, index: number) => {
+  const handleRemoveItem = <K extends keyof Project>(field: K, index: number) => {
     if (project) {
       setProject((prevProject) => {
-        const updatedList = [...(prevProject as any)[field]];
-        updatedList.splice(index, 1);
-        return { ...prevProject, [field]: updatedList };
+        if (prevProject) {
+          let updatedList: string[] | { name: string }[];
+  
+          if (Array.isArray(prevProject[field])) {
+            if (field === "authors") {
+              updatedList = [...prevProject.authors]; // Array de autores
+            } else if (field === "tags" || field === "images" || field === "links") {
+              updatedList = [...(prevProject[field] as string[])]; // Array de strings
+            } else {
+              return prevProject;
+            }
+  
+            updatedList.splice(index, 1);
+  
+            return {
+              ...prevProject,
+              [field]: updatedList,
+            };
+          }
+        }
+        return prevProject;
       });
     }
   };

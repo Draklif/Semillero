@@ -6,7 +6,7 @@ export const Route = createFileRoute("/crud/")({
 });
 
 function CRUDIndexPage() {
-  const [projectId, setProjectId] = useState<string>(""); // Estado para almacenar el id del proyecto
+  const [projectId, setProjectId] = useState<string>("0"); // Estado para almacenar el id del proyecto
 
   return (
     <div className="bg-gray-900 min-h-screen text-white p-6 flex flex-col items-center">
@@ -23,7 +23,7 @@ function CRUDIndexPage() {
 
       {/* Botón para navegar hacia el editor de ese proyecto */}
       <Link
-        to={`/crud/${projectId}`} // Navegamos a la ruta con el id ingresado
+        to={`/crud/${projectId}`}
         className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
       >
         Ver ahora
@@ -31,7 +31,7 @@ function CRUDIndexPage() {
 
       {/* Botón para crear un nuevo proyecto con id 0 */}
       <Link
-        to="/crud/0" // Usamos el id 0 para indicar que estamos creando un proyecto nuevo
+        to={`/crud/${projectId}`}
         className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
       >
         Crear nuevo proyecto
