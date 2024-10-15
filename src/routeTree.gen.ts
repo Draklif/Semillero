@@ -14,7 +14,9 @@ import { Route as rootRoute } from './routes/__root'
 import { Route as RepositorioImport } from './routes/repositorio'
 import { Route as IndexImport } from './routes/index'
 import { Route as ProyectosIndexImport } from './routes/proyectos/index'
+import { Route as CrudIndexImport } from './routes/crud/index'
 import { Route as ProyectosProyectoIdImport } from './routes/proyectos/$proyectoId'
+import { Route as CrudProyectoIdImport } from './routes/crud/$proyectoId'
 
 // Create/Update Routes
 
@@ -33,8 +35,18 @@ const ProyectosIndexRoute = ProyectosIndexImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const CrudIndexRoute = CrudIndexImport.update({
+  path: '/crud/',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const ProyectosProyectoIdRoute = ProyectosProyectoIdImport.update({
   path: '/proyectos/$proyectoId',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const CrudProyectoIdRoute = CrudProyectoIdImport.update({
+  path: '/crud/$proyectoId',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -50,8 +62,16 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RepositorioImport
       parentRoute: typeof rootRoute
     }
+    '/crud/$proyectoId': {
+      preLoaderRoute: typeof CrudProyectoIdImport
+      parentRoute: typeof rootRoute
+    }
     '/proyectos/$proyectoId': {
       preLoaderRoute: typeof ProyectosProyectoIdImport
+      parentRoute: typeof rootRoute
+    }
+    '/crud/': {
+      preLoaderRoute: typeof CrudIndexImport
       parentRoute: typeof rootRoute
     }
     '/proyectos/': {
@@ -66,7 +86,9 @@ declare module '@tanstack/react-router' {
 export const routeTree = rootRoute.addChildren([
   IndexRoute,
   RepositorioRoute,
+  CrudProyectoIdRoute,
   ProyectosProyectoIdRoute,
+  CrudIndexRoute,
   ProyectosIndexRoute,
 ])
 

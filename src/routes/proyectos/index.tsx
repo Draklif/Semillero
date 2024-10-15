@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import data from "@/data/data.json";
+import { getData } from "@/lib/api";
 import ProjectList from "@/components/reusables/projectList";
 import CategoryCard from "@/components/reusables/categoryCard";
 import { Project } from "@/types";
@@ -16,7 +16,6 @@ export const Route = createFileRoute("/proyectos/")({
   component: MainProjectList,
 });
 
-const projects: Project[] = data.projects;
 const itemsPerPage = 5;
 
 function MainProjectList() {
@@ -27,12 +26,22 @@ function MainProjectList() {
   const [selectedCategory, setSelectedCategory] = useState("TODOS");
 
   useEffect(() => {
-    const initialProjects = projects.filter(
-      (p) => p.format.length === 0 || p.format.every((fmt) => fmt === "")
-    );
-    setProyectos(initialProjects);
-    setFilteredProjects(initialProjects);
-    setNumPages(Math.ceil(initialProjects.length / itemsPerPage));
+    const fetchProjects = async () => {
+      try {
+        const response = await getData();
+        const projects = response.projects;
+        const initialProjects = projects.filter(
+          (p) => p.format.length === 0 || p.format.every((fmt) => fmt === "")
+        );
+        setProyectos(initialProjects);
+        setFilteredProjects(initialProjects);
+        setNumPages(Math.ceil(initialProjects.length / itemsPerPage));
+      } catch (error) {
+        console.error("Error al cargar los proyectos:", error);
+      }
+    };
+
+    fetchProjects();
   }, []);
 
   useEffect(() => {
@@ -49,8 +58,22 @@ function MainProjectList() {
     setCurrentPage(1);
   }, [selectedCategory, proyectos]);
 
+  useEffect(() => {
+    if (selectedCategory !== "TODOS") {
+      const categoryFilteredProjects = proyectos.filter((p) =>
+        p.tags.includes(selectedCategory)
+      );
+      setFilteredProjects(categoryFilteredProjects);
+      setNumPages(Math.ceil(categoryFilteredProjects.length / itemsPerPage));
+    } else {
+      setFilteredProjects(proyectos);
+      setNumPages(Math.ceil(proyectos.length / itemsPerPage));
+    }
+    setCurrentPage(1);
+  }, [selectedCategory, proyectos]);
+
   const categories = React.useMemo(() => {
-    const categoryMap = new Map([["TODOS", projects[0]?.images[0] || ""]]);
+    const categoryMap = new Map([["TODOS", proyectos[0]?.images[0] || ""]]);
     filteredProjects.forEach(project => {
       project.tags.forEach(tag => {
         if (!categoryMap.has(tag)) {

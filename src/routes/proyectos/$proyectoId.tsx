@@ -1,7 +1,7 @@
 import DOMPurify from "dompurify";
 import { createFileRoute } from "@tanstack/react-router";
-import data from "../../data/data.json";
-import { useState } from "react";
+import { getDataById } from "@/lib/api";
+import { useState, useEffect } from "react";
 import { Project } from "@/types";
 import {
   Carousel,
@@ -16,20 +16,44 @@ export const Route = createFileRoute("/proyectos/$proyectoId")({
 });
 
 function ProyectoComponent() {
-  const projects: Project[] = data.projects;
-  const { proyectoId } = Route.useParams();
-  const [project] = useState(
-    projects.find((item) => Number(proyectoId) === item.id)
-  );
-  const [selectedImage, setSelectedImage] = useState(project ? project.images[0] : "");
+  const { proyectoId } = Route.useParams(); // Obtener el id de la URL
+  const [project, setProject] = useState<Project | null>(null); // Estado para el proyecto
+  const [loading, setLoading] = useState(true); // Estado de carga
+  const [error, setError] = useState<string | null>(null); // Estado para manejar errores
+  const [selectedImage, setSelectedImage] = useState<string>(""); // Estado para la imagen seleccionada
+
+  // Cargar el proyecto cuando cambia el id
+  useEffect(() => {
+    const fetchProject = async () => {
+      try {
+        const projectData = await getDataById(Number(proyectoId));
+        setProject(projectData);
+        setSelectedImage(projectData.images[0]); // Establecer la primera imagen como la seleccionada
+      } catch (err) {
+        setError("Proyecto no encontrado");
+      } finally {
+        setLoading(false); // Termina el estado de carga
+      }
+    };
+
+    fetchProject();
+  }, [proyectoId]);
+
+  if (loading) {
+    return <div>Cargando...</div>; // Mostrar mensaje mientras se carga el proyecto
+  }
+
+  if (error) {
+    return <div>{error}</div>; // Mostrar mensaje de error si no se encuentra el proyecto
+  }
 
   if (!project) {
-    return <div>Proyecto no encontrado</div>;
+    return <div>Proyecto no encontrado</div>; // En caso de que no se obtenga el proyecto
   }
 
   const cleanHTML = DOMPurify.sanitize(project.desc_long);
 
-  const handleImageSelect = (image : string) => {
+  const handleImageSelect = (image: string) => {
     setSelectedImage(image);
   };
 
@@ -54,7 +78,7 @@ function ProyectoComponent() {
                       key={index}
                       src={`${img}`}
                       alt={`Imagen ${index + 1}`}
-                      className={`w-full h-32 object-cover ${img === selectedImage ? 'ring-2 ring-blue-500' : ''}`}
+                      className={`w-full h-32 object-cover ${img === selectedImage ? "ring-2 ring-blue-500" : ""}`}
                       onClick={() => handleImageSelect(img)}
                     />
                   </CarouselItem>
@@ -86,10 +110,7 @@ function ProyectoComponent() {
               <p>Etiquetas:</p>
               <div className="flex flex-wrap gap-2 mt-1">
                 {project.tags.map((tag, index) => (
-                  <span
-                    key={index}
-                    className="bg-blue-500 px-2 py-1 rounded-full text-xs text-white"
-                  >
+                  <span key={index} className="bg-blue-500 px-2 py-1 rounded-full text-xs text-white">
                     {tag}
                   </span>
                 ))}
@@ -101,10 +122,7 @@ function ProyectoComponent() {
       <div className="flex gap-4 mt-6">
         <div className="flex-1 bg-gray-800 p-4 rounded-lg">
           <h2 className="text-2xl font-semibold">Acerca de</h2>
-          <p
-            className="mt-2 text-md"
-            dangerouslySetInnerHTML={{ __html: cleanHTML }}
-          ></p>
+          <p className="mt-2 text-md" dangerouslySetInnerHTML={{ __html: cleanHTML }}></p>
         </div>
         <div className="w-1/4 bg-gray-800 p-4 rounded-lg">
           <h2 className="text-2xl font-semibold">Enlaces</h2>
