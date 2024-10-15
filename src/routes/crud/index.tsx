@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/crud/")({
   component: CRUDIndexPage,
@@ -7,6 +7,13 @@ export const Route = createFileRoute("/crud/")({
 
 function CRUDIndexPage() {
   const [projectId, setProjectId] = useState<string>("0"); // Estado para almacenar el id del proyecto
+
+  const navigate = useNavigate()
+  useEffect(() => {
+    if (!localStorage.getItem("CR")) {
+      navigate({ to: "/" })
+    }
+  }, [navigate]);
 
   return (
     <div className="bg-gray-900 min-h-screen text-white p-6 flex flex-col items-center">

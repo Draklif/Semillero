@@ -15,17 +15,17 @@ export const getDataById = async (id: number) => {
   
 // Crear un nuevo proyecto
 const postData = async (newProject: Project) => {
-  return await api.post('/data', newProject)
+  return await api.post('/data', newProject, { headers: { Authorization: `Bearer ${localStorage.getItem("CR")}` } })
 }
 
 // Eliminar un proyecto por ID
 const deleteData = async (id: number) => {
-  return await api.delete('/data/' + id)
+  return await api.delete('/data/' + id, { headers: { Authorization: `Bearer ${localStorage.getItem("CR")}` } })
 }
 
 // Actualizar un proyecto por ID
 const updateData = async (id: number, updatedProject: Project) => {
-  return await api.put('/data/' + id, updatedProject)
+  return await api.put('/data/' + id, updatedProject, { headers: { Authorization: `Bearer ${localStorage.getItem("CR")}` } })
 }
 
 export { getData, postData, deleteData, updateData }
