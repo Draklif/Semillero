@@ -22,6 +22,11 @@ interface Category {
   image: string;
 }
 
+function getRandomImage(images: string[]): string {
+  const randomIndex = Math.floor(Math.random() * images.length);
+  return images[randomIndex];
+}
+
 function Landing() {
   const router = useNavigate();
   const [categories, setCategories] = useState<Category[]>([]);
@@ -36,18 +41,29 @@ function Landing() {
       );
       setProyectos(initialProjects);
   
-      const categoryMap = new Map();
-      proyectos.forEach((project) => {
+      const categoryMap = new Map<string, string[]>();
+
+      initialProjects.forEach((project) => {
         project.tags.forEach((tag) => {
           if (!categoryMap.has(tag)) {
-            categoryMap.set(tag, project.images[0]);
+            categoryMap.set(tag, []);
+          }
+          const imagesForTag = categoryMap.get(tag);
+          if (imagesForTag && project.images.length > 0) {
+            imagesForTag.push(...project.images);
           }
         });
       });
-      setCategories(Array.from(categoryMap, ([tag, image]) => ({ tag, image })));
+
+      const categoryArray = Array.from(categoryMap, ([tag, images]) => ({
+        tag,
+        image: getRandomImage(images),
+      }));
+
+      setCategories(categoryArray);
     }
     fetchData();
-  });
+  }, []);
 
   const handleCategorySelect = (category: string) => {
     router({ to: `/proyectos?category=${encodeURIComponent(category)}` });
@@ -55,10 +71,14 @@ function Landing() {
 
   return (
     <div className="bg-gray-900 min-h-screen text-white p-6">
+      <h2 className="text-2xl font-bold mt-8 mb-4">Modelo 3D Universidad de Boyacá</h2>
+      <p className="text-white mt-4 mb-8">
+        Pulsa el modelo para ir al proyecto. También puedes moverlo arrastrando sobre el modelo.
+      </p>
       <MainModel />
-      <h2 className="text-2xl font-bold mt-8 mb-4">Últimos Proyectos</h2>
+      <h2 className="text-2xl font-bold mt-8 mb-4">Proyectos Destacados</h2>
       <div className="rounded-lg bg-gray-800 mb-8 flex items-center justify-center p-4">
-        <Carousel className="w-[1440px]">
+        <Carousel className="w-4/5">
           <CarouselContent>
             <CarouselItem>
               {proyectos[0] && <FeaturedCard project={proyectos[0]} />}
@@ -87,7 +107,7 @@ function Landing() {
         <Carousel opts={{ align: "start", loop: true }} className="w-4/5">
           <CarouselContent className="-ml-1">
             {categories.map((category) => (
-              <CarouselItem key={category.tag} className="basis-1/5">
+              <CarouselItem key={category.tag} className="lg:basis-1/4 sm:basis-1/2 md:basis-1/3">
                 <CategoryCard
                   category={category.tag}
                   backgroundImage={category.image}

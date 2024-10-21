@@ -7,23 +7,31 @@ export const Route = createFileRoute("/crud/$proyectoId")({
   component: CRUDProjectId,
 });
 
-function CRUDProjectId() {
-  const { proyectoId } = Route.useParams(); // Obtener el id de la URL
-  const navigate = useNavigate(); // Para redirigir después de guardar
-  const [project, setProject] = useState<Project | null>(null); // Estado del proyecto
-  const [loading, setLoading] = useState(true); // Estado de carga
-  const [error, setError] = useState<string | null>(null); // Estado de error
+const FORMATS = [".fbx", ".blend", ".png", ".jpeg", ".obj", ".gif", "Otro(s)"];
 
-  // Cargar proyecto si el id está presente
+const formatDateToDDMMYYYY = (date: Date): string => {
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // Los meses comienzan en 0
+  const year = date.getFullYear();
+  return `${day}-${month}-${year}`;
+};
+
+function CRUDProjectId() {
+  const { proyectoId } = Route.useParams();
+  const navigate = useNavigate();
+  const [project, setProject] = useState<Project | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [isResource, setIsResource] = useState(false);
+
   useEffect(() => {
     const loadProject = async () => {
       if (proyectoId === "0") {
-        // Si el id es 0, estamos creando un proyecto nuevo
         setProject({
           id: 0,
           name: "",
           desc_short: "",
-          date: new Date().toISOString(),
+          date: formatDateToDDMMYYYY(new Date()),
           authors: [{ name: "" }],
           tags: [],
           format: [],
@@ -32,17 +40,16 @@ function CRUDProjectId() {
           desc_long: "",
         });
       } else {
-        // Si no es 0, estamos editando un proyecto existente
         const projectData = await getDataById(Number(proyectoId));
         setProject(projectData);
+        setIsResource(projectData.format.length > 0); // Si tiene formatos, es un recurso
       }
-      setLoading(false); // Terminamos de cargar
+      setLoading(false);
     };
 
     loadProject();
   }, [proyectoId]);
 
-  // Función para manejar cambios en los campos
   const handleInputChange = <K extends keyof Project>(field: K, value: Project[K]) => {
     if (project) {
       setProject((prevProject) => ({
@@ -52,39 +59,37 @@ function CRUDProjectId() {
     }
   };
 
-  // Función para manejar el envío del formulario con validaciones
   const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault(); // Evitar recarga
+    event.preventDefault();
     if (validateForm()) {
       if (project) {
         if (proyectoId && proyectoId !== "0") {
-          await updateData(Number(proyectoId), project); // Actualizar si ya existe
+          await updateData(Number(proyectoId), project);
         } else {
-          await postData(project); // Crear si es nuevo
+          await postData(project);
         }
-        navigate({ to: "/proyectos" }); // Redirigir a la lista de proyectos después de guardar
+        navigate({ to: "/proyectos" });
       }
     } else {
       setError("Por favor, complete todos los campos obligatorios.");
     }
   };
 
-  // Validar que todos los campos estén llenos, excepto 'format'
   const validateForm = () => {
     if (!project) return false;
-    const { name, desc_short, authors, tags, images, links, desc_long } = project;
-
-
+    
+    const { name, desc_short, authors, tags, images, links, desc_long, format } = project;
+    
     const hasRequiredFields = authors.length > 0 && tags.length > 0 && images.length > 0 && links.length > 0;
-
-    // Comprobar si hay URLs de imágenes duplicadas
+    
     const uniqueImages = new Set(images.map(image => image.trim()));
     const areImagesUnique = uniqueImages.size === images.length;
-
-    // Comprobar si hay enlaces duplicados
+    
     const uniqueLinks = new Set(links.map(link => link.trim()));
     const areLinksUnique = uniqueLinks.size === links.length;
-
+  
+    const hasFormat = !isResource || (isResource && format.length > 0);
+  
     return (
       name.trim() !== "" &&
       desc_short.trim() !== "" &&
@@ -95,41 +100,40 @@ function CRUDProjectId() {
       links.every((link) => link.trim() !== "") &&
       hasRequiredFields &&
       areImagesUnique &&
-      areLinksUnique
+      areLinksUnique &&
+      hasFormat
     );
   };
+  
 
-  // Función para eliminar un elemento de una lista
   const handleRemoveItem = <K extends keyof Project>(field: K, index: number) => {
     if (project) {
       setProject((prevProject) => {
-        if (prevProject) {
-          let updatedList: string[] | { name: string }[];
-  
-          if (Array.isArray(prevProject[field])) {
-            if (field === "authors") {
-              updatedList = [...prevProject.authors]; // Array de autores
-            } else if (field === "tags" || field === "images" || field === "links") {
-              updatedList = [...(prevProject[field] as string[])]; // Array de strings
-            } else {
-              return prevProject;
-            }
-  
-            updatedList.splice(index, 1);
-  
-            return {
-              ...prevProject,
-              [field]: updatedList,
-            };
+          if (prevProject) {
+              let updatedList: string[] | { name: string }[];
+              if (Array.isArray(prevProject[field])) {
+                  if (field === "authors") {
+                      updatedList = [...prevProject.authors];
+                  } else if (field === "tags" || field === "images" || field === "links" || field === "format") {
+                      updatedList = [...(prevProject[field] as string[])]; // Asegúrate de que 'format' es manejado aquí
+                  } else {
+                      return prevProject;
+                  }
+                  updatedList.splice(index, 1);
+                  return {
+                      ...prevProject,
+                      [field]: updatedList,
+                  };
+              }
           }
-        }
-        return prevProject;
+          return prevProject;
       });
     }
   };
 
+
   if (loading || !project) {
-    return <div>Cargando...</div>; // Mostrar un mensaje de carga mientras obtenemos los datos
+    return <div>Cargando...</div>;
   }
 
   return (
@@ -141,6 +145,25 @@ function CRUDProjectId() {
       {error && <div className="text-red-500 mb-4">{error}</div>}
 
       <form onSubmit={handleSubmit}>
+        {/* Toggle entre Proyecto y Recurso */}
+        <div className="mb-4 flex items-center">
+          <label className="block mb-2 mr-4">Tipo:</label>
+          <button
+            type="button"
+            className={`p-2 rounded ${isResource ? "bg-blue-500" : "bg-gray-500"}`}
+            onClick={() => setIsResource(false)}
+          >
+            Proyecto
+          </button>
+          <button
+            type="button"
+            className={`p-2 ml-4 rounded ${isResource ? "bg-gray-500" : "bg-blue-500"}`}
+            onClick={() => setIsResource(true)}
+          >
+            Recurso
+          </button>
+        </div>
+
         {/* Nombre del Proyecto */}
         <div className="mb-4">
           <label htmlFor="name" className="block mb-2">Nombre del Proyecto:</label>
@@ -239,9 +262,49 @@ function CRUDProjectId() {
             onClick={() => handleInputChange("tags", [...project.tags, ""])}
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded"
           >
-            Añadir Tag
+            Añadir Etiqueta
           </button>
         </div>
+
+        {/* Campos adicionales si es un Recurso */}
+        {isResource && (
+          <div className="mb-4">
+            <label htmlFor="format" className="block mb-2">Formato del Recurso:</label>
+            {project.format.map((fmt, index) => (
+              <div key={index} className="flex items-center mb-2">
+                <select
+                  value={fmt}
+                  onChange={(e) => {
+                    const newFormats = [...project.format];
+                    newFormats[index] = e.target.value;
+                    handleInputChange("format", newFormats);
+                  }}
+                  className="w-full p-2 rounded bg-gray-800 text-white"
+                >
+                  {FORMATS.map((format) => (
+                    <option key={format} value={format}>
+                      {format}
+                    </option>
+                  ))}
+                </select>
+                <button
+                  type="button"
+                  onClick={() => handleRemoveItem("format", index)}
+                  className="ml-2 text-red-500"
+                >
+                  X
+                </button>
+              </div>
+            ))}
+            <button
+              type="button"
+              onClick={() => handleInputChange("format", [...project.format, ""])}
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded"
+            >
+              Añadir Formato
+            </button>
+          </div>
+        )}
 
         {/* Imágenes */}
         <div className="mb-4">
@@ -311,12 +374,14 @@ function CRUDProjectId() {
           </button>
         </div>
 
-        <button
-          type="submit"
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-        >
-          {proyectoId === "0" ? "Crear Proyecto" : "Actualizar Proyecto"}
-        </button>
+        <div className="flex justify-center mt-6">
+          <button
+            type="submit"
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          >
+            {proyectoId === "0" ? "Crear Proyecto" : "Actualizar Proyecto"}
+          </button>
+        </div>
       </form>
     </div>
   );

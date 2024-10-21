@@ -33,9 +33,11 @@ function MainProjectList() {
         const initialProjects = projects.filter(
           (p) => p.format.length === 0 || p.format.every((fmt) => fmt === "")
         );
-        setProyectos(initialProjects);
-        setFilteredProjects(initialProjects);
-        setNumPages(Math.ceil(initialProjects.length / itemsPerPage));
+        const reversedProjects = initialProjects.reverse();
+
+        setProyectos(reversedProjects);
+        setFilteredProjects(reversedProjects);
+        setNumPages(Math.ceil(reversedProjects.length / itemsPerPage));
       } catch (error) {
         console.error("Error al cargar los proyectos:", error);
       }
@@ -98,7 +100,7 @@ function MainProjectList() {
           <Carousel opts={{ align: "start", loop: true }} className="w-4/5">
             <CarouselContent className="-ml-1">
               {categories.map((category) => (
-                <CarouselItem key={category.tag} className="basis-1/5">
+                <CarouselItem key={category.tag} className="lg:basis-1/4 sm:basis-1/2 md:basis-1/3">
                   <CategoryCard
                     category={category.tag}
                     backgroundImage={category.image}

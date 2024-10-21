@@ -14,27 +14,28 @@ const itemsPerPage = 5;
 function RepositoryList() {
   const [filtrosActivos, setFiltrosActivos] = useState<string[]>([]);
   const [proyectos, setProyectos] = useState<Project[]>([]);
-  const [filteredProjects, setFilteredProjects] = useState<Project[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [numPages, setNumPages] = useState(0);
   const [categoryCounts, setCategoryCounts] = useState<Record<string, number>>({});
 
   useEffect(() => {
-    const fetchProyectos = async () => {
+    const fetchProjects = async () => {
       try {
         const response = await getData();
         const projects = response.projects;
+        const filteredProjects = projects.filter((p) =>
+          p.format.some((fmt) => fmt !== "")
+        );
+        const reversedProjects = filteredProjects.reverse();
 
-        const initialProjects = projects.filter((p) => p.format.some((fmt) => fmt !== ""));
-        setProyectos(initialProjects);
-        setFilteredProjects(initialProjects);
-        setNumPages(Math.ceil(initialProjects.length / itemsPerPage));
+        setProyectos(reversedProjects);
+        setNumPages(Math.ceil(filteredProjects.length / itemsPerPage));
       } catch (error) {
         console.error("Error al cargar los proyectos:", error);
       }
     };
 
-    fetchProyectos();
+    fetchProjects();
   }, []);
 
   useEffect(() => {
@@ -55,8 +56,8 @@ function RepositoryList() {
 
     setCategoryCounts(counts);
     setNumPages(Math.ceil(filteredProjects.length / itemsPerPage));
-    setCurrentPage(1); // Reinicia la página cada vez que cambian los filtros
-  }, [filtrosActivos, proyectos]);;
+    setCurrentPage(1);
+  }, [filtrosActivos, proyectos]);
 
   const agregarFiltroClick = (filtro: string) => {
     if (!filtrosActivos.includes(filtro.toLowerCase())) {
@@ -69,25 +70,23 @@ function RepositoryList() {
   };
 
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const currentProjects = filteredProjects.slice(startIndex, startIndex + itemsPerPage);
+  const currentProjects = proyectos
+    .filter((p) =>
+      filtrosActivos.every(
+        (filtro) =>
+          p.name.toLowerCase().includes(filtro) ||
+          p.tags.some((tag) => tag.toLowerCase().includes(filtro))
+      )
+    )
+    .slice(startIndex, startIndex + itemsPerPage);
 
   return (
     <div className="bg-gray-900 min-h-screen text-white p-6">
       <div className="w-full md:w-4/5 mx-auto">
         <h1 className="text-2xl font-bold mb-2 text-left">Repositorio</h1>
         <div className="flex">
-          <FilterSidebar
-            filtrosActivos={filtrosActivos}
-            categoryCounts={categoryCounts}
-            onAddFilter={agregarFiltroClick}
-            onRemoveFilter={eliminarFiltro}
-          />
-          <ProjectList
-            projects={currentProjects}
-            numPages={numPages}
-            currentPage={currentPage}
-            setCurrentPage={setCurrentPage}
-          />
+          <FilterSidebar filtrosActivos={filtrosActivos} categoryCounts={categoryCounts} onAddFilter={agregarFiltroClick} onRemoveFilter={eliminarFiltro} />
+          <ProjectList projects={currentProjects} numPages={numPages} currentPage={currentPage} setCurrentPage={setCurrentPage} />
         </div>
       </div>
     </div>

@@ -20,7 +20,7 @@ function FilterSidebar({ filtrosActivos, categoryCounts, onAddFilter, onRemoveFi
   };
 
   return (
-    <div className="w-[700px] p-4 bg-gray-800 rounded-lg shadow mr-4">
+    <div className="lg:w-[420px] sm:w-[200px] p-4 bg-gray-800 rounded-lg shadow mr-4">
       <h2 className="text-xl font-bold text-white mb-3">FILTROS</h2>
       <input
         type="text"
