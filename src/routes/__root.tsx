@@ -16,7 +16,7 @@ function NavBar() {
         <div className="flex gap-6">
           <Link to="/" className="hover:text-blue-400 transition-colors duration-300">
             <img 
-              src="public/LogoUDB.png" 
+              src="./LogoUDB.png" 
               alt="Logo Universidad de Boyacá" 
               className="h-8" 
             />
