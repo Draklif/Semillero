@@ -81,10 +81,10 @@ function Landing() {
         <Carousel className="w-4/5">
           <CarouselContent>
             <CarouselItem>
-              {proyectos[32] && <FeaturedCard project={proyectos[32]} />}
+              {proyectos[0] && <FeaturedCard project={proyectos[0]} />}
             </CarouselItem>
             <CarouselItem>
-              {proyectos[33] && <FeaturedCard project={proyectos[33]} />}
+              {proyectos[1] && <FeaturedCard project={proyectos[1]} />}
             </CarouselItem>
           </CarouselContent>
           <CarouselPrevious className="text-black" />
